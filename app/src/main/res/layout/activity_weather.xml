@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"
+        android:layout_marginLeft="8dp"
         android:text="CURRENT CITY"
         android:textColor="@color/white"
         android:textSize="34sp" />
@@ -21,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/time_updated"
-        android:text="TIME UPDATED AT"
+        android:text="An Un Expected Error Happened"
         android:layout_below="@+id/city_name"
         android:textSize="14sp"
         android:layout_marginTop="12dp"
@@ -72,6 +73,15 @@
                     android:textSize="14sp"
                     android:textStyle="italic"
                     android:textColor="@color/purple_700"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="21"
+                    android:id="@+id/feels_like"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:textColor="@color/purple_200"/>
             </LinearLayout>
 
 

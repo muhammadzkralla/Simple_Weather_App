@@ -6,6 +6,10 @@ import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
 import com.dimits.simpleweatherapp.databinding.ActivityWeatherBinding
 import com.dimits.simpleweatherapp.model.Response
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -45,19 +49,22 @@ class WeatherActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread()).subscribe(
             {
                 fillTheData(it)
+                Log.d(TAG, "getWeather: Data Fetched")
             },
             {
-                Log.d(TAG, "getWeather: $it")
+                Toast.makeText(this,"${it.message}", Toast.LENGTH_LONG).show()
+                Log.d(TAG, "getWeather: ${it.message}")
             }
             )
     }
 
     private fun fillTheData(response: Response) {
         binding.timeUpdated.text = "Updated At: ${getDateTime(response.dt.toString())}"
-        binding.mainTemp.text = response.main?.temp.toString()
-        binding.maxTemp.text = response.main?.tempMax.toString()
-        binding.minTemp.text = response.main?.tempMin.toString()
+        binding.mainTemp.text = response.main?.temp.toString() + " C°"
         binding.humidity.text = response.main?.humidity.toString() + " %"
+        binding.maxTemp.text = response.main?.tempMax.toString() + " C°"
+        binding.minTemp.text = response.main?.tempMin.toString() + " C°"
+        binding.feelsLike.text = "Feels like: " + response.main?.feelsLike.toString() + " C°"
 
     }
 
@@ -72,7 +79,25 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.weather_activity_drawer, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle item selection
+        return when (item.itemId) {
+            R.id.refresh -> {
+                finish()
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
     companion object{
         const val TAG = "WeatherActivity"
     }
+
 }

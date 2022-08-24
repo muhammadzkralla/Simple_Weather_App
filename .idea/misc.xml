@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/SimpleWeatherApp/app/src/main/res/layout/activity_main.xml" value="0.2015625" />
         <entry key="..\:/SimpleWeatherApp/app/src/main/res/layout/activity_weather.xml" value="0.2" />
+        <entry key="..\:/SimpleWeatherApp/app/src/main/res/menu/weather_activity_drawer.xml" value="0.21979166666666666" />
       </map>
     </option>
   </component>

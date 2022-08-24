@@ -11,7 +11,10 @@ import retrofit2.http.Query
 
 interface ApiService {
     @GET("weather")
-    fun getMainResponse(@Query("q") q:String, @Query("units") units:String, @Query("APPID") APPID:String): Single<Response>
+    fun getMainResponse(@Query("q") q:String,
+                        @Query("units") units:String,
+                        @Query("APPID") APPID:String)
+    : Single<Response>
 }
 
 object API {
