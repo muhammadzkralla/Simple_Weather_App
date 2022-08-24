@@ -34,10 +34,16 @@ class WeatherActivity : AppCompatActivity() {
 
         val longitude = intent.getDoubleExtra("log",0.0)
         val latitude = intent.getDoubleExtra("lat",0.0)
-        geocoder = Geocoder(this, Locale.getDefault())
-        address = geocoder.getFromLocation(latitude,longitude,1)
-        city = address.get(0).locality
-        binding.cityName.text = city
+
+        if (intent.getBooleanExtra("bool", false)) {
+            geocoder = Geocoder(this, Locale.getDefault())
+            address = geocoder.getFromLocation(latitude, longitude, 1)
+            city = address.get(0).locality
+            binding.cityName.text = city
+        }else {
+            city = intent.getStringExtra("city").toString()
+            binding.cityName.text = city
+        }
 
         getWeather()
 

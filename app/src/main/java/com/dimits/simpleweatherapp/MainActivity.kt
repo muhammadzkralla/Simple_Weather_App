@@ -29,6 +29,13 @@ class MainActivity : AppCompatActivity() {
         binding.fetchLocationBtn.setOnClickListener {
             fetchLocation()
         }
+
+        binding.searchBtn.setOnClickListener {
+            val intent = Intent(this, WeatherActivity::class.java).apply {
+                putExtra("city", binding.edtCityName.text.toString())
+            }
+            startActivity(intent)
+        }
     }
 
     private fun fetchLocation(){
@@ -48,6 +55,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this,WeatherActivity::class.java).apply {
                     putExtra("log",it.longitude)
                     putExtra("lat",it.latitude)
+                    putExtra("bool", true)
 
                 }
                 startActivity(intent)

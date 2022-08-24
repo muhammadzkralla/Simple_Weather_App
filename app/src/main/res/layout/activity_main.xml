@@ -4,14 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/background">
+
+    <EditText
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="24dp"
+        android:hint="Type the name of the city here..."
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/edt_city_name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_city_name"
+        android:id="@+id/text2"
+        android:text="NOTE: PLEASE TYPE THE CITY NAME ONLY WITHOUT ANY EXTRAS."
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="20dp"
+        android:textColor="#D32F2F"
+        android:textStyle="italic"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_btn"
+        android:text="Search"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text2"
+        android:textColor="@color/teal_200"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Starting your day in town? take a quick look on the weather here !"
+        android:id="@+id/text"
+        android:layout_centerHorizontal="true"
+        android:textSize="24sp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginBottom="14dp"
+        android:textStyle="italic"
+        android:textColor="@color/black"
+        android:layout_centerVertical="true"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/fetch_location_btn"
-        android:text="FETCH LOCATION"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:text="Weather Today"
+        android:layout_below="@+id/text"
+        android:textColor="@color/teal_200"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
