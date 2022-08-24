@@ -12,6 +12,15 @@
         android:id="@+id/city_name"
         android:text="CITY"
         android:textSize="34sp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/main_temp"
+        android:text="243.33"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>
 
