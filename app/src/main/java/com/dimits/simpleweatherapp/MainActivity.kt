@@ -2,11 +2,10 @@ package com.dimits.simpleweatherapp
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import com.dimits.simpleweatherapp.databinding.ActivityMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -16,25 +15,37 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding:ActivityMainBinding
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
-
+    lateinit var dialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.progress_bar,null)
+        /**set Dialog*/
+        val builder = AlertDialog.Builder(this)
+        builder.setView(dialogView)
+        builder.setCancelable(true)
+        dialog = builder.create()
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         binding.fetchLocationBtn.setOnClickListener {
+            dialog.show()
             fetchLocation()
         }
 
         binding.searchBtn.setOnClickListener {
-            val intent = Intent(this, WeatherActivity::class.java).apply {
-                putExtra("city", binding.edtCityName.text.toString())
+            if (!binding.edtCityName.text.isEmpty()){
+                val intent = Intent(this, WeatherActivity::class.java).apply {
+                    putExtra("city", binding.edtCityName.text.toString())
+                }
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "blank text is not accepted",Toast.LENGTH_LONG).show()
             }
-            startActivity(intent)
         }
     }
 
@@ -52,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         }
         task.addOnSuccessListener {
             if (it != null){
+                dialog.dismiss()
                 val intent = Intent(this,WeatherActivity::class.java).apply {
                     putExtra("log",it.longitude)
                     putExtra("lat",it.latitude)
@@ -59,6 +71,9 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 startActivity(intent)
+            }else {
+                dialog.dismiss()
+                Toast.makeText(this,"This action requires internet and GPS enabled.", Toast.LENGTH_LONG).show()
             }
         }
 
