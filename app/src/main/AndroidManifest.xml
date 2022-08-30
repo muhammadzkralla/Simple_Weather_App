@@ -14,10 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleWeatherApp">
         <activity
-            android:name=".WeatherActivity"
+            android:name=".ui.WeatherActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
