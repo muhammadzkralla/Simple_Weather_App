@@ -16,9 +16,7 @@ import com.dimits.simpleweatherapp.R
 import com.dimits.simpleweatherapp.databinding.ActivityWeatherBinding
 import com.dimits.simpleweatherapp.model.Response
 import com.dimits.simpleweatherapp.viewModels.WeatherViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,7 +25,6 @@ class WeatherActivity : AppCompatActivity() {
     lateinit var binding: ActivityWeatherBinding
     lateinit var geocoder: Geocoder
     lateinit var address: List<Address>
-    lateinit var compositeDisposable: CompositeDisposable
     private lateinit var dialog: AlertDialog
     val key = "c4c69437c55b7fa9d45b57fa60364157"
     lateinit var city: String
@@ -49,8 +46,6 @@ class WeatherActivity : AppCompatActivity() {
         dialog = builder.create()
         dialog.show()
 
-        compositeDisposable = CompositeDisposable()
-
         val longitude = intent.getDoubleExtra("log", 0.0)
         val latitude = intent.getDoubleExtra("lat", 0.0)
 
@@ -64,11 +59,11 @@ class WeatherActivity : AppCompatActivity() {
             binding.cityName.text = city
         }
 
-        setup(city, key)
+        setup(city)
 
     }
 
-    private fun setup(city: String, key: String) {
+    private fun setup(city: String) {
         viewModel.getWeather(city, key)
 
         viewModel.response.observe(this) {
@@ -126,11 +121,6 @@ class WeatherActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onDestroy() {
-        compositeDisposable.dispose()
-        super.onDestroy()
     }
 
     companion object {

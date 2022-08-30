@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.searchBtn.setOnClickListener {
-            if (!binding.edtCityName.text.isEmpty()) {
+            if (binding.edtCityName.text.isNotEmpty()) {
                 val intent = Intent(this, WeatherActivity::class.java).apply {
                     putExtra("city", binding.edtCityName.text.toString())
                 }
