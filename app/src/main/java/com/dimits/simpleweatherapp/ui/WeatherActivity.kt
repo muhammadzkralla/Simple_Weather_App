@@ -16,7 +16,6 @@ import com.dimits.simpleweatherapp.R
 import com.dimits.simpleweatherapp.databinding.ActivityWeatherBinding
 import com.dimits.simpleweatherapp.model.Response
 import com.dimits.simpleweatherapp.viewModels.WeatherViewModel
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -83,6 +82,7 @@ class WeatherActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun fillTheData(response: Response) {
         binding.apply {
             timeUpdated.text = "Updated At: ${getDateTime(response.dt.toString())}"
@@ -96,12 +96,12 @@ class WeatherActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     private fun getDateTime(s: String): String? {
-        try {
+        return try {
             val sdf = SimpleDateFormat("MM/dd/yyyy hh:mm a")
             val netDate = Date(s.toLong() * 1000)
-            return sdf.format(netDate)
+            sdf.format(netDate)
         } catch (e: Exception) {
-            return e.toString()
+            e.toString()
         }
     }
 
