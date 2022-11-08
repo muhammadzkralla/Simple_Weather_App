@@ -3,7 +3,6 @@ package com.dimits.simpleweatherapp.ui
 import android.annotation.SuppressLint
 import android.location.Address
 import android.location.Geocoder
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,10 +11,19 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.dimits.simpleweatherapp.R
 import com.dimits.simpleweatherapp.databinding.ActivityWeatherBinding
 import com.dimits.simpleweatherapp.model.Response
+import com.dimits.simpleweatherapp.viewModels.CoroutineViewModel
+import com.dimits.simpleweatherapp.viewModels.State
 import com.dimits.simpleweatherapp.viewModels.WeatherViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,6 +36,7 @@ class WeatherActivity : AppCompatActivity() {
     val key = "c4c69437c55b7fa9d45b57fa60364157"
     lateinit var city: String
     private val viewModel: WeatherViewModel by viewModels()
+    private val coroutineViewModel: CoroutineViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,16 +67,15 @@ class WeatherActivity : AppCompatActivity() {
             binding.cityName.text = city
         }
 
-        setup(city)
+        setupWithRxJava(city)
 
     }
 
-    private fun setup(city: String) {
+    private fun setupWithRxJava(city: String) {
         viewModel.getWeather(city, key)
 
         viewModel.response.observe(this) {
             fillTheData(it)
-            dialog.dismiss()
         }
 
         viewModel.throwable.observe(this) {
@@ -78,12 +86,46 @@ class WeatherActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
             finish()
-            dialog.dismiss()
+
         }
+
+    }
+
+    private fun setupWithCoroutines(city: String){
+        coroutineViewModel.getWeather(city, key)
+
+        // Start a coroutine in the lifecycle scope
+        lifecycleScope.launch {
+            // repeatOnLifecycle launches the block in a new coroutine every time the
+            // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // Trigger the flow and start listening for values.
+                // Note that this happens when lifecycle is STARTED and stops
+                // collecting when the lifecycle is STOPPED
+                coroutineViewModel.uiState.collect {
+                    when (it){
+                        is State.Success -> fillTheData(it.response)
+                        is State.Error -> showToast(it.throwable.message.toString())
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun showToast(message: String) {
+        dialog.dismiss()
+        Toast.makeText(
+                this,
+                message,
+                Toast.LENGTH_LONG
+            ).show()
+            finish()
     }
 
     @SuppressLint("SetTextI18n")
     private fun fillTheData(response: Response) {
+        dialog.dismiss()
         binding.apply {
             timeUpdated.text = "Updated At: ${getDateTime(response.dt.toString())}"
             mainTemp.text = response.main?.temp.toString() + " C°"
