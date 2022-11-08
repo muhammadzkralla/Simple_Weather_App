@@ -1,9 +1,11 @@
 package com.dimits.simpleweatherapp.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dimits.simpleweatherapp.API
 import com.dimits.simpleweatherapp.model.Response
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -16,7 +18,8 @@ class CoroutineViewModel : ViewModel() {
     val uiState: StateFlow<State> = _uiState
 
     fun getWeather(city: String, key: String){
-        viewModelScope.launch {
+        viewModelScope.launch (Dispatchers.IO) {
+            Log.d("CoroutineViewModel", "Fetching data on Thread : ${Thread.currentThread().name}")
             try {
                 API.apiService.getMainResponseWithCoroutines(city, "metric", key).collect{
                     _uiState.emit(State.Success(it))
@@ -27,6 +30,10 @@ class CoroutineViewModel : ViewModel() {
         }
     }
 
+    override fun onCleared() {
+        Log.d("CoroutineViewModel", "onCleared Thread : ${Thread.currentThread().name}")
+        super.onCleared()
+    }
 }
 // Represents different states for the LatestNews screen
 sealed class State {

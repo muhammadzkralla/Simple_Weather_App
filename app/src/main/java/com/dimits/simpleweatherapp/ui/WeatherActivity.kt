@@ -125,6 +125,7 @@ class WeatherActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun fillTheData(response: Response) {
+        Log.d("WeatherActivity", "Data Filled Using : ${Thread.currentThread().name}")
         dialog.dismiss()
         binding.apply {
             timeUpdated.text = "Updated At: ${getDateTime(response.dt.toString())}"
