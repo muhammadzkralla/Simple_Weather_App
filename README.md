@@ -1,4 +1,5 @@
 # Simple_Weather_App
-fetching data from weather api using Retrofit and rxJava
+Fetching Data from Weather API using Retrofit and RxJava
 
-CAUTION : This project is not based on any tutorials or other GitHub repositories, but created from scratch by me applying on the knowledge I gained of rxJava and retrofit from different Courses and past-projects.
+A Simple Weather App Fetches Weather from a Weather API using Retrofit, Kotlin Coroutines/ RxJava <br/> <br/> <hr/>
+<img src = "https://user-images.githubusercontent.com/54005330/224539435-b2e1a8be-cac5-42c0-8925-9cbb151df465.PNG" >
